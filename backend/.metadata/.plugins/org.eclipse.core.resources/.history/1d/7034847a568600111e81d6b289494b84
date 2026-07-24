@@ -1,0 +1,44 @@
+package com.example.demo.post.post.entity;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.member.member.entity.UserInfo;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@Entity
+@AllArgsConstructor
+public class Company {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@OneToMany(mappedBy = "company")
+	private List<UserInfo> user = new ArrayList();
+
+	@ManyToOne
+	private CompanyInfo companyInfo;
+
+	//private String companyDetail;
+	//private String companyLocation;
+	private String companySort;
+	
+	public Company(CompanyInfo companyInfo, String companySort) {
+	
+		this.companyInfo = companyInfo;
+		this.companySort = companySort;
+	}
+
+}

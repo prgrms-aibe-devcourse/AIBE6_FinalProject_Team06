@@ -1,0 +1,17 @@
+package com.example.demo.post.post.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.post.post.entity.CompanyInfo;
+
+@Repository
+public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, Long> {
+
+	CompanyInfo findByCompanyNumber(String companyNumber);
+
+	void deleteAllById(Long id);
+
+	CompanyInfo findByCompanyName(String companyName);
+
+}

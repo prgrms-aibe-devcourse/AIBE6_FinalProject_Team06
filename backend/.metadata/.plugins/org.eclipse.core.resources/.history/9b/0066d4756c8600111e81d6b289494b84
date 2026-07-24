@@ -1,0 +1,36 @@
+package com.example.demo.post.post.dto;
+
+import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+
+public class TotalDTO {
+	 
+	  private Long id;
+	  private LocalDateTime date;
+	  private String company;
+	  private String product;
+	  private String member;
+	  private Long quantity;
+	  private Long price;
+	  private String image;
+	  
+	  public TotalDTO(
+			   Long id,
+			   LocalDateTime date,
+			   String company,
+			   String product,
+			   String member,
+			   Long quantity,
+			   Long price,
+			   String image
+			  ) {
+		  
+		// TODO Auto-generated constructor stub
+	}
+}

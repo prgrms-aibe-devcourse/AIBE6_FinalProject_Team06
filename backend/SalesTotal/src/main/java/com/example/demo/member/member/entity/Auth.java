@@ -1,0 +1,22 @@
+package com.example.demo.member.member.entity;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@AllArgsConstructor
+@Entity
+@NoArgsConstructor
+public class Auth {
+	@Id
+	private Long id;
+	private String nickname;
+	private LocalDateTime connected_at;
+}

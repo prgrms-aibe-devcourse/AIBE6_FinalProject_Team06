@@ -1,0 +1,50 @@
+package com.example.demo.member.member.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.member.member.entity.Auth;
+import com.example.demo.member.member.entity.UserInfo;
+import com.example.demo.member.member.repository.AuthRepository;
+import com.example.demo.member.member.repository.UserRepository;
+import com.example.demo.post.post.entity.Company;
+import com.example.demo.post.post.repository.CompanyRepository;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@Service
+public class MemberService {
+	private final AuthRepository authrepository;
+	private final UserRepository userrepository;
+	private final CompanyRepository companyrepository;
+	public Auth save(Auth auth) {
+		// TODO Auto-generated method stub
+		return authrepository.save(auth);
+	}
+
+	public UserInfo findByAuth(Auth auth) {
+		// TODO Auto-generated method stub
+		return userrepository.findByAuth(auth);
+	}
+
+	public Auth findByID(Long id) {
+		// TODO Auto-generated method stub
+		return authrepository.findAllById(id);
+	}
+
+	public UserInfo saveUsrInfo(UserInfo userInfo) {
+		// TODO Auto-generated method stub
+		return userrepository.save(userInfo);
+	}
+
+	public Auth findById(Long id) {
+		// TODO Auto-generated method stub
+		return authrepository.findAllById(id);
+	}
+
+	public Company save(Company company) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

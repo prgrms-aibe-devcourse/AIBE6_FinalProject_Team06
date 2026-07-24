@@ -1,0 +1,192 @@
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eaf2e6, #f8f6ef);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.auth-card {
+  width: min(420px, 100%);
+  padding: 39px;
+  background: #fff;
+  border: 1px solid #e1e9df;
+  border-radius: 16px;
+  box-shadow: 0 18px 55px #3445361f;
+}
+.auth-brand {
+  font-size: 25px;
+  font-weight: 800;
+  color: #20332b;
+  margin-bottom: 34px;
+}
+.auth-brand span {
+  color: #73ad50;
+  font-size: 34px;
+  vertical-align: -4px;
+}
+.auth-card > h1 {
+  margin-bottom: 10px;
+}
+.auth-card form {
+  display: grid;
+  gap: 16px;
+  margin-top: 25px;
+}
+.auth-card label {
+  display: grid;
+  gap: 7px;
+  font-weight: 700;
+  color: #46564d;
+  font-size: 12px;
+}
+.auth-card input {
+  height: 43px;
+  border: 1px solid #dbe4dc;
+  border-radius: 7px;
+  padding: 0 12px;
+  outline-color: #78a96a;
+}
+.name-field {
+  display: none !important;
+}
+.name-field.show {
+  display: grid !important;
+}
+.auth-toggle {
+  display: block;
+  margin: 20px auto 0;
+  background: none;
+  color: #497b39;
+  font-weight: 800;
+}
+.auth-note {
+  font-size: 10px;
+  color: #9aa69f;
+  text-align: center;
+  margin: 27px 0 0;
+}
+.auth-error {
+  min-height: 15px;
+  color: #d55e44;
+  font-size: 12px;
+  text-align: center;
+  margin: 12px 0 0;
+}
+.auth-card .submit {
+  position: relative;
+  overflow: hidden;
+  min-height: 50px;
+  margin-top: 8px;
+  border: 1px solid #1f4938;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b7656 0%, #295240 58%, #203f32 100%);
+  box-shadow: 0 9px 18px rgba(32, 78, 58, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  letter-spacing: -0.2px;
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+.auth-card .submit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 28%, rgba(255, 255, 255, 0.18) 49%, transparent 70%);
+  transform: translateX(-130%);
+  transition: transform 430ms ease;
+  pointer-events: none;
+}
+.auth-card .submit:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 13px 24px rgba(32, 78, 58, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.auth-card .submit:hover::after {
+  transform: translateX(130%);
+}
+.auth-card .submit:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(32, 78, 58, 0.24), inset 0 2px 4px rgba(17, 53, 37, 0.25);
+}
+.auth-card .submit:focus-visible {
+  outline: 3px solid rgba(115, 173, 80, 0.42);
+  outline-offset: 3px;
+}
+.auth-card .submit:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.35);
+  opacity: 0.62;
+  transform: none;
+}
+.logout {
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 10px;
+  border-radius: 7px;
+  background: #354b41;
+  color: #d5e4d8;
+  font-weight: 700;
+}
+.login-button {
+  position: relative;
+  overflow: hidden;
+  min-height: 44px;
+  border: 1px solid rgba(207, 241, 160, 0.58);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #b9e982 0%, #91ca61 48%, #6daf4d 100%);
+  color: #183325;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  box-shadow: 0 8px 18px rgba(8, 20, 14, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.48);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+.login-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.46) 50%, transparent 70%);
+  transform: translateX(-135%);
+  transition: transform 450ms ease;
+  pointer-events: none;
+}
+.login-button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(8, 20, 14, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+.login-button:hover::after {
+  transform: translateX(135%);
+}
+.login-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(8, 20, 14, 0.26), inset 0 2px 4px rgba(53, 104, 40, 0.23);
+}
+.login-button:focus-visible {
+  outline: 3px solid rgba(197, 239, 143, 0.58);
+  outline-offset: 3px;
+}
+.logout-action:hover {
+  background: #40594d;
+  color: #fff;
+}
+.auth-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+.auth-actions .login-button {
+  width: auto;
+  margin: 0;
+  padding: 10px 6px;
+}
+.signup-button {
+  border: 1px solid #61766c;
+  border-radius: 10px;
+  background: transparent;
+  color: #dbe9df;
+  font-weight: 800;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+.signup-button:hover {
+  background: #354b41;
+  border-color: #a7d87d;
+  transform: translateY(-1px);
+}

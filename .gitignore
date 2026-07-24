@@ -1,0 +1,26 @@
+# ===== Frontend (TypeScript/Node) =====
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.*
+frontend/*.log
+
+# ===== Backend (Java/Eclipse) =====
+backend/SalesTotal/target/
+backend/SalesTotal/bin/
+backend/SalesTotal/.settings/
+backend/SalesTotal/.classpath
+backend/SalesTotal/.project
+
+# ===== 공통 =====
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Spring Boot
+backend/SalesTotal/src/main/resources/application.yml
+backend/SalesTotal/.metadata
+backend/SalesTotal/data

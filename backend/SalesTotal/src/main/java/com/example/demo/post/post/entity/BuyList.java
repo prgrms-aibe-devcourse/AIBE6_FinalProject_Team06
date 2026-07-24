@@ -1,0 +1,41 @@
+package com.example.demo.post.post.entity;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@Getter
+@Entity
+@NoArgsConstructor
+public class BuyList {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String contentType;
+
+	private LocalDateTime buyDate;
+	private Long buyQualtity;
+	private String contents;
+	private LocalDateTime createAT;
+	private LocalDateTime motifyAT;
+
+	@ManyToOne
+	private Trade trade;
+	
+	public BuyList(String contentType, Long buyQualtity, Trade trade) {
+		this.contentType=contentType;
+		this.buyDate= LocalDateTime.now();
+		this.createAT= LocalDateTime.now();
+		this.motifyAT= LocalDateTime.now();
+		this.buyQualtity=buyQualtity;
+		this.trade = trade;
+	}
+}

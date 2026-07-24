@@ -1,0 +1,287 @@
+package com.example.demo.post.post.controller;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.member.member.entity.Auth;
+import com.example.demo.member.member.entity.UserInfo;
+import com.example.demo.member.member.service.MemberService;
+import com.example.demo.post.post.dto.ComInInDTO;
+import com.example.demo.post.post.dto.ComInResDTO;
+import com.example.demo.post.post.dto.ComMoInDTO;
+import com.example.demo.post.post.dto.ComMoResDTO;
+import com.example.demo.post.post.dto.CompanyInfoDTO;
+import com.example.demo.post.post.dto.CompanyViewDTO;
+import com.example.demo.post.post.dto.DeleteCompanyDTO;
+import com.example.demo.post.post.dto.DeleteProductDTO;
+import com.example.demo.post.post.dto.InsertListDTO;
+import com.example.demo.post.post.dto.ListDto;
+import com.example.demo.post.post.dto.ProInInDTO;
+import com.example.demo.post.post.dto.ProInResDTO;
+import com.example.demo.post.post.dto.ProMoInDTO;
+import com.example.demo.post.post.dto.ProMoResDTO;
+import com.example.demo.post.post.dto.ProductInfoDTO;
+import com.example.demo.post.post.dto.ProductViewDto;
+import com.example.demo.post.post.entity.BuyList;
+import com.example.demo.post.post.entity.Company;
+import com.example.demo.post.post.entity.CompanyInfo;
+import com.example.demo.post.post.entity.Product;
+import com.example.demo.post.post.entity.ProductInfo;
+import com.example.demo.post.post.entity.SalesList;
+import com.example.demo.post.post.entity.Trade;
+import com.example.demo.post.post.service.PostService;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
+@RestController
+@AllArgsConstructor
+public class PostController {
+	private final PostService postService;
+	private final MemberService memberService;
+	
+	@Transactional
+	@PostMapping("/insert/company")
+	ComInResDTO InsertCompany(@RequestBody ComInInDTO In, HttpSession session) {
+		if(session.getAttribute("kakaoId")==null) {
+			throw new RuntimeException("로그인이 되지 않았습니다.");
+		}
+		CompanyInfo companyInfo = null;
+		try {
+			companyInfo = new CompanyInfo(In.getCompanyType(), In.getName(), In.getCompanyNumber());
+		} catch (Exception e) {
+			throw new RuntimeException("회사정보 저장이 되지 않았습니다.");
+		}
+		try {
+			companyInfo = postService.save(companyInfo);
+		} catch (Exception e) {
+			throw new RuntimeException("회사정보 저장이 되지 않았습니다.");
+		}
+		return new ComInResDTO("ok", companyInfo.getId(), companyInfo.getCompanyType(), companyInfo.getCompanyName(),
+				companyInfo.getCompanyNumber(), companyInfo.getCreateAT());
+	}
+
+	@Transactional
+	@PostMapping("/insert/product")
+	ProInResDTO InsertProduct(@RequestBody ProInInDTO In, HttpSession session) {
+		if(session.getAttribute("kakaoId")==null) {
+			throw new RuntimeException("로그인이 되지 않았습니다.");
+		}
+		ProductInfo productInfo = null;
+		try {
+			productInfo = new ProductInfo(In.getProductNumber(), In.getName(), In.getProductType(), In.getStock(),
+					In.getPrice(), In.getImage());
+		} catch (Exception e) {
+			throw new RuntimeException("제품정보 저장이 되지 않았습니다.");
+		}
+		try {
+			productInfo = postService.save(productInfo);
+		} catch (Exception e) {
+			throw new RuntimeException("제품정보 저장이 되지 않았습니다.");
+		}
+		return new ProInResDTO("ok", productInfo.getId(), productInfo.getProductNumber(), productInfo.getProductName(),
+				productInfo.getProductType(), productInfo.getStock(), productInfo.getProductPrice(),
+				productInfo.getImage(), productInfo.getCreateAT());
+	}
+
+	@Transactional
+	@PutMapping("/motify/product")
+	ProMoResDTO UpdateProduct(@RequestBody ProMoInDTO In, HttpSession session) {
+		if(session.getAttribute("kakaoId")==null) {
+			throw new RuntimeException("로그인이 되지 않았습니다.");
+		}
+		ProductInfo productInfo = postService.findByProductNumber(In.getProductNumber());
+		if (productInfo == null) {
+			throw new RuntimeException("제품정보가 없습니다.");
+		}
+		productInfo.setProductName(In.getName());
+		productInfo.setImage(In.getImage());
+		productInfo.setProductName(In.getName());
+		productInfo.setProductPrice(In.getPrice());
+		productInfo.setProductType(In.getProductType());
+		productInfo.setStock(In.getStock());
+		productInfo.setCreateAT(LocalDateTime.now());
+
+		return new ProMoResDTO("ok", productInfo.getId(), productInfo.getProductNumber(), productInfo.getProductName(),
+				productInfo.getProductType(), productInfo.getStock(), productInfo.getProductPrice(),
+				productInfo.getImage(), productInfo.getCreateAT());
+	}
+
+	@Transactional
+	@PutMapping("/motify/company")
+	ComMoResDTO MotifyCompany(@RequestBody ComMoInDTO In, HttpSession session) {
+		if(session.getAttribute("kakaoId")==null) {
+			throw new RuntimeException("로그인이 되지 않았습니다.");
+		}
+		CompanyInfo companyInfo = postService.findByCompanyNumber(In.getCompanyNumber());
+		if (companyInfo == null) {
+			throw new RuntimeException("회사정보가 없습니다.");
+		}
+		companyInfo.setCompanyName(In.getName());
+		companyInfo.setCompanyNumber(In.getCompanyNumber());
+		companyInfo.setCompanyType(In.getCompanyType());
+		companyInfo.setCreateAT(LocalDateTime.now());
+
+		return new ComMoResDTO("ok", companyInfo.getId(), companyInfo.getCompanyType(), companyInfo.getCompanyName(),
+				companyInfo.getCompanyNumber(), companyInfo.getCreateAT());
+	}
+
+	@Transactional
+	@DeleteMapping("/delete/product")
+	ProductInfoDTO DeleteProduct(@RequestBody DeleteProductDTO In, HttpSession session) {
+		if(session.getAttribute("kakaoId")==null) {
+			throw new RuntimeException("로그인이 되지 않았습니다.");
+		}
+		try {
+			postService.delete(In.getId());
+		} catch (Exception e) {
+			throw new RuntimeException("제품정보 삭제가 되지 않았습니다.");
+		}
+		return new ProductInfoDTO("ok");
+	}
+
+	@Transactional
+	@DeleteMapping("/delete/company")
+	CompanyInfoDTO DeleteCompany(@RequestBody DeleteCompanyDTO In, HttpSession session) {
+		if(session.getAttribute("kakaoId")==null) {
+			throw new RuntimeException("로그인이 되지 않았습니다.");
+		}
+		try {
+			postService.deleteCompany(In.getId());
+		} catch (Exception e) {
+			throw new RuntimeException("회사정보 삭제가 되지 않았습니다.");
+		}
+		return new CompanyInfoDTO("ok");
+	}
+
+	@Transactional
+	@PostMapping("/view/product")
+	List<ProductViewDto> ViewProduct(HttpSession session) {
+	
+		List<ProductInfo> productInfo = null;
+		List<ProductViewDto> productViewInfo = new ArrayList<>();
+		try {
+			productInfo = postService.findAll();
+		} catch (Exception e) {
+			throw new RuntimeException("제품정보가 없습니다.");
+		}
+		System.out.println(productInfo);
+		for (int i = 0; i < productInfo.size(); i++) {
+			productViewInfo.add(new ProductViewDto(productInfo.get(i).getId(), productInfo.get(i).getProductNumber(),
+					productInfo.get(i).getProductName(), productInfo.get(i).getProductType(),
+					productInfo.get(i).getStock(), productInfo.get(i).getProductPrice(), productInfo.get(i).getImage(),
+					productInfo.get(i).getCreateAT()));
+
+		}
+
+		return productViewInfo;
+	}
+
+	@Transactional
+	@PostMapping("/view/company")
+	List<CompanyViewDTO> ViewCompany(HttpSession session) {
+	
+		List<CompanyInfo> companyInfo = null;
+		List<CompanyViewDTO> companyViewInfo = new ArrayList<>();
+		try {
+			companyInfo = postService.findAllCompany();
+		} catch (Exception e) {
+			throw new RuntimeException("회사정보가 없습니다.");
+		}
+
+		for (int i = 0; i < companyInfo.size(); i++) {
+			companyViewInfo.add(new CompanyViewDTO(companyInfo.get(i).getId(), companyInfo.get(i).getCompanyNumber(),
+					companyInfo.get(i).getCompanyName(), companyInfo.get(i).getCompanyType(),
+					companyInfo.get(i).getCreateAT()));
+
+		}
+
+		return companyViewInfo;
+	}
+	
+	@Transactional
+	@PostMapping("/insert/ProductList")
+	ListDto ProductList(@RequestBody InsertListDTO In, HttpSession session) {
+		if(session.getAttribute("kakaoId")==null) {
+			throw new RuntimeException("로그인이 필요합니다.");
+		}
+		
+		Long KakaoId = (Long)session.getAttribute("kakaoId");
+		
+		CompanyInfo comInfo = postService.findByCompanyName(In.getCompany());
+		Auth auth = memberService.findById(KakaoId);
+		UserInfo userInfo = memberService.findByAuth(auth);
+		ProductInfo productInFo = postService.findByProductName(In.getProduct());
+		Company company = null;
+		try {
+			company=postService.findByCompanyInfo(comInfo);
+			if(company==null) {
+				company = new Company(userInfo, comInfo, In.getFlow());
+			}
+		company = postService.save(company);
+		}catch(Exception e) {
+			company=postService.findByCompanyInfo(comInfo);
+		}
+		Product product = null;
+		try {
+			product = new Product(productInFo, company);
+		}catch(Exception e) {
+			product = postService.findByCompanyName(company);
+		}
+		
+		Trade trade = null;
+		try {
+			trade = new Trade(product);
+		}catch(Exception e) {
+			trade = postService.findByProduct(product);
+		}
+		
+		try {
+			product.getTrade().add(trade);
+			product = postService.save(product);
+		}catch(Exception e) {
+			
+		}
+		SalesList saleslist = null;
+		BuyList buylist = null;
+		if(In.getFlow().equals("in")) {
+			buylist = new BuyList(In.getQuantity());
+			trade.getBuylist().add(buylist);
+		}else {
+			saleslist = new SalesList(In.getQuantity());
+			trade.getSaleslist().add(saleslist);
+		}
+		
+		try {
+			
+			trade = postService.save(trade);
+			if(In.getFlow().equals("in")) {
+				buylist = postService.save(buylist);
+			}else {
+				saleslist = postService.save(saleslist);
+			}
+			
+		}catch(Exception e) {
+			
+		}
+		
+		if(In.getFlow().equals("in")) {
+			return new ListDto(buylist.getId(), buylist.getCreateAT(), company.getCompanySort(),
+					company.getCompanyInfo().getCompanyName(),productInFo.getProductName(), auth.getNickname(), buylist.getBuyQualtity(),
+					productInFo.getProductPrice(), productInFo.getImage());
+		}else {
+			return new ListDto(saleslist.getId(), saleslist.getCreateAT(), company.getCompanySort(),
+					company.getCompanyInfo().getCompanyName(),productInFo.getProductName(), auth.getNickname(), saleslist.getSalesQualtity(),
+					productInFo.getProductPrice(), productInFo.getImage());
+		}
+		
+	}
+}

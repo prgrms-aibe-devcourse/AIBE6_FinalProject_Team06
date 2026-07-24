@@ -1,0 +1,16 @@
+package com.example.demo.post.post.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class InsertListDTO {
+    private String flow;
+    private String company;
+    private String product;
+    private Long quantity;
+    private String image;
+}

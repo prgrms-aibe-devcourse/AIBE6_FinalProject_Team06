@@ -1,0 +1,133 @@
+package com.example.demo.post.post.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.post.post.entity.BuyList;
+import com.example.demo.post.post.entity.Company;
+import com.example.demo.post.post.entity.CompanyInfo;
+import com.example.demo.post.post.entity.Product;
+import com.example.demo.post.post.entity.ProductInfo;
+import com.example.demo.post.post.entity.SalesList;
+import com.example.demo.post.post.entity.Trade;
+import com.example.demo.post.post.repository.BuyListRepository;
+import com.example.demo.post.post.repository.CompanyInfoRepository;
+import com.example.demo.post.post.repository.CompanyRepository;
+import com.example.demo.post.post.repository.ProductInfoRepository;
+import com.example.demo.post.post.repository.ProductRepository;
+import com.example.demo.post.post.repository.SalesListRepository;
+import com.example.demo.post.post.repository.TradeRepository;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@Service
+public class PostService {
+	private final CompanyInfoRepository companyInfoRepository;
+	private final ProductInfoRepository productInfoRepository;
+	private final CompanyRepository companyrepository;
+	private final ProductRepository productrepository;
+	private final TradeRepository traderepository;
+	private final BuyListRepository buylistrepository;
+	private final SalesListRepository saleslistrepository;
+	
+	public CompanyInfo save(CompanyInfo companyInfo) {
+		// TODO Auto-generated method stub
+		return companyInfoRepository.save(companyInfo);
+	}
+
+	public ProductInfo save(ProductInfo productInfo) {
+		// TODO Auto-generated method stub
+		return productInfoRepository.save(productInfo);
+	}
+
+	public ProductInfo findByProductNumber(String productNumber) {
+		// TODO Auto-generated method stub
+		return productInfoRepository.findByProductNumber(productNumber);
+	}
+
+	public CompanyInfo findByCompanyNumber(String companyNumber) {
+		// TODO Auto-generated method stub
+		return companyInfoRepository.findByCompanyNumber(companyNumber);
+	}
+
+	public List<ProductInfo> findAll() {
+		// TODO Auto-generated method stub
+		return productInfoRepository.findAll();
+	}
+
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		productInfoRepository.deleteAllById(id);
+	}
+
+	public void deleteCompany(Long id) {
+		// TODO Auto-generated method stub
+		companyInfoRepository.deleteAllById(id);
+	}
+
+	public List<CompanyInfo> findAllCompany() {
+		// TODO Auto-generated method stub
+		return companyInfoRepository.findAll();
+	}
+
+	public CompanyInfo findByCompanyName(String companyName) {
+		// TODO Auto-generated method stub
+		return companyInfoRepository.findByCompanyName(companyName);
+	}
+	
+	public Company save(Company company) {
+		// TODO Auto-generated method stub
+		return companyrepository.save(company);
+	}
+
+	public ProductInfo findByProductName(String productName) {
+		// TODO Auto-generated method stub
+		return productInfoRepository.findByProductName(productName);
+	}
+
+
+	public Product findByCompanyName(Company company) {
+		// TODO Auto-generated method stub
+		return productrepository.findByCompany(company);
+	}
+
+	public Trade findByProduct(Product product) {
+		// TODO Auto-generated method stub
+		return traderepository.findByProduct(product);
+	}
+
+	public Trade save(Trade trade) {
+		// TODO Auto-generated method stub
+		return traderepository.save(trade);
+	}
+
+	public Product save(Product product) {
+		// TODO Auto-generated method stub
+		return productrepository.save(product);
+	}
+
+	public BuyList save(BuyList buylist) {
+		// TODO Auto-generated method stub
+		return buylistrepository.save(buylist);
+	}
+
+	public SalesList save(SalesList saleslist) {
+		// TODO Auto-generated method stub
+		return saleslistrepository.save(saleslist);
+	}
+
+	public Company findByCompanyInfo(CompanyInfo companyInfo) {
+		// TODO Auto-generated method stub
+		return companyrepository.findByCompanyInfo(companyInfo);
+	}
+
+	public List<SalesList> findAllSales() {
+		// TODO Auto-generated method stub
+		return saleslistrepository.findAll();
+	}
+
+
+
+}

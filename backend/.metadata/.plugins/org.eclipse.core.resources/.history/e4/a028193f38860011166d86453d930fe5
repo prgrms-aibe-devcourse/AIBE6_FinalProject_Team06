@@ -1,0 +1,10 @@
+package com.example.demo.post.post.dto;
+
+public class InsertListDTO {
+    private String flow;
+    private String company;
+    private String product;
+    private Long quantity;
+    private Long price;
+    private String image;
+}

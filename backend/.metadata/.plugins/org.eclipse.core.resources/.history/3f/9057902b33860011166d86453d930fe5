@@ -1,0 +1,79 @@
+package com.example.demo.member.member.service;
+
+import java.util.Map;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class KakaoService {
+
+    private final RestTemplate restTemplate;
+
+
+    public String getAccessToken(String code) {
+
+        String tokenUrl = "https://kauth.kakao.com/oauth/token";
+
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", "d84d6e9a3a5dd2815c93d5be163b0e72");
+        params.add("redirect_uri", "http://localhost:8080/oauth/kakao/callback");
+        params.add("client_secret", "2ORq2UgAiFoGLQQQ1MGNCaUUocJkTleh");
+        params.add("code", code);
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+
+        HttpEntity<MultiValueMap<String,String>> request =
+                new HttpEntity<>(params, headers);
+        System.out.println("===== KAKAO TOKEN REQUEST =====");
+        System.out.println("code = " + code);
+        System.out.println("client_id = " + params.getFirst("client_id"));
+        System.out.println("redirect_uri = " + params.getFirst("redirect_uri"));
+
+        ResponseEntity<Map> response =
+                restTemplate.postForEntity(
+                        tokenUrl,
+                        request,
+                        Map.class
+                );
+
+
+        return (String) response.getBody()
+                .get("access_token");
+    }
+    
+    public Map getUserInfo(String accessToken) {
+
+        String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<?> request = new HttpEntity<>(headers);
+
+        ResponseEntity<Map> response =
+                restTemplate.postForEntity(
+                        userInfoUrl,
+                        request,
+                        Map.class
+                );
+
+        return response.getBody();
+    }
+}

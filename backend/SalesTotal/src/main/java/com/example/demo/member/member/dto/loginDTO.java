@@ -1,0 +1,14 @@
+package com.example.demo.member.member.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class loginDTO {
+	Long kakaoId;
+}

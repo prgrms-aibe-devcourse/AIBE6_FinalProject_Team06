@@ -1,0 +1,133 @@
+package com.example.demo.member.member.controller;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.member.member.dto.loginDTO;
+import com.example.demo.member.member.dto.signUpDTO;
+import com.example.demo.member.member.dto.signUpResDTO;
+import com.example.demo.member.member.entity.Auth;
+import com.example.demo.member.member.entity.UserInfo;
+import com.example.demo.member.member.service.KakaoService;
+import com.example.demo.member.member.service.MemberService;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("/oauth/kakao")
+@RequiredArgsConstructor
+public class AuthController {
+	private final KakaoService kakaoService;
+	private final MemberService memberservice;
+	@Transactional
+	@GetMapping("/callback")
+	public String kakaoCallback(@RequestParam("code") String code, HttpSession session) {
+
+		System.out.println(code);
+		String accessToken = kakaoService.getAccessToken(code);
+
+		System.out.println(accessToken);
+		Map userInfo = kakaoService.getUserInfo(accessToken);
+		Number id = (Number) userInfo.get("id");
+		Long kakaoId = id.longValue();
+		if(kakaoId==null) {
+			return "redirect:/logout";
+		}
+		String kakaoname = (String)((Map)userInfo.get("properties")).get("nickname");
+		
+		System.out.println(userInfo);
+		Auth auth = null;
+		try {
+		 auth = new Auth(kakaoId, kakaoname, LocalDateTime.now());
+		 auth = memberservice.save(auth);
+		}catch(Exception e) {
+			auth = memberservice.findByID(kakaoId);
+			if(auth==null) {
+				throw new RuntimeException("auth가 없습니다.");
+			}
+		}
+		UserInfo userInfos = memberservice.findByAuth(auth);
+		session.setAttribute("kakaoId", kakaoId);
+		System.out.println("call"+kakaoId);
+	
+		
+		if(userInfos==null) {
+			return "redirect:http://localhost:5173/signup/"+kakaoId;
+		}else {
+			return "redirect:http://localhost:5173/login/"+kakaoId;
+		}
+		
+	}
+	
+	@Transactional
+	@ResponseBody
+	@PostMapping("/signUp")
+	public signUpResDTO kakaoSignUp(@RequestBody signUpDTO sign, HttpSession session) {
+		Long kakaoId =
+			    (Long)session.getAttribute("kakaoId");
+		System.out.println(kakaoId);
+		System.out.println(sign.getKakaoId());
+		if(!kakaoId.equals(sign.getKakaoId())) {
+			throw new RuntimeException("카카오정보와 일치하지 않습니다.");
+		}
+		Auth auth = null;
+		try {
+		auth = memberservice.findByID(sign.getKakaoId());
+		}catch(Exception e) {
+			throw new RuntimeException("카카오정보가 없습니다.");
+		}
+		UserInfo usrInfo = null;
+		try {
+			usrInfo = new UserInfo(auth, sign.getType(), LocalDateTime.now());
+			usrInfo = memberservice.saveUsrInfo(usrInfo);
+		}catch(Exception e) {
+			throw new RuntimeException("usr정보를 만들지 못했습니다.");
+		}
+		
+		System.out.println(usrInfo.getAuth().getId());
+		return new signUpResDTO(auth.getNickname(), auth.getId());
+		
+	}
+	
+	@PostMapping("/login")
+	@ResponseBody
+	public signUpResDTO kakaoLogin(@RequestBody loginDTO sign, HttpSession session) {
+		Long kakaoId =
+			    (Long)session.getAttribute("kakaoId");
+		System.out.println(kakaoId);
+		System.out.println(sign.getKakaoId());
+		if(!kakaoId.equals(sign.getKakaoId())) {
+			throw new RuntimeException("카카오정보와 일치하지 않습니다.");
+		}
+		
+		Auth auth = null;
+		try {
+		auth = memberservice.findByID(sign.getKakaoId());
+		session.invalidate();
+		session.setAttribute("kakaoId", auth.getId());
+		}catch(Exception e) {
+			throw new RuntimeException("auth 정보가 없습니다.");
+		}
+		
+	    return new signUpResDTO(auth.getNickname(), auth.getId());
+	}
+	
+	@GetMapping("/logout")
+	public String kakaoLogOut(HttpSession session) {
+		session.invalidate();
+		
+	    return "redirect:http://localhost:5173";
+	}
+	
+}

@@ -1,0 +1,14 @@
+package com.example.demo.post.post.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.post.post.entity.Company;
+import com.example.demo.post.post.entity.CompanyInfo;
+import com.example.demo.post.post.entity.Product;
+
+public interface ProductRepository extends JpaRepository<Product, Long>  {
+
+
+		Product findByCompany(Company company);
+
+}

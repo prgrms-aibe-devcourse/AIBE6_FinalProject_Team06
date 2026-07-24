@@ -1,0 +1,44 @@
+package com.example.demo.post.post.dto;
+
+import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class ListDto {
+   
+	private Long id;
+    private LocalDateTime date;
+    private String flow;
+    private String company;
+    private String product;
+    private String member;
+    private Long quantity;
+    private Long price;
+    private String image;
+    public ListDto(
+    		Long id,
+    LocalDateTime date,
+    String flow,
+    String company,
+     String product,
+    String member,
+     Long quantity,
+    Long price,
+     String image) {
+    	this.id = id;
+    	this.date = date;
+    	this.flow = flow;
+    	this.company = company;
+    	this.product = product;
+    	this.member = member;
+    	this.quantity = quantity;
+    	this.price = price;
+    	this.image = image;
+	}
+}

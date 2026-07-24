@@ -1,0 +1,5 @@
+package com.example.demo.post.post.repository;
+
+public interface BuyListRepository {
+
+}

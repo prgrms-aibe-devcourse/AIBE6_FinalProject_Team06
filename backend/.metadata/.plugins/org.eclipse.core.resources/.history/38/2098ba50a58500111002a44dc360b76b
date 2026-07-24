@@ -1,0 +1,80 @@
+package com.example.demo.member.member.controller;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.member.member.dto.signUpDTO;
+import com.example.demo.member.member.dto.signUpResDTO;
+import com.example.demo.member.member.entity.Auth;
+import com.example.demo.member.member.entity.UserInfo;
+import com.example.demo.member.member.service.KakaoService;
+import com.example.demo.member.member.service.MemberService;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("/oauth/kakao")
+@RequiredArgsConstructor
+public class AuthController {
+	private final KakaoService kakaoService;
+	private final MemberService memberservice;
+	@Transactional
+	@GetMapping("/callback")
+	public String kakaoCallback(@RequestParam("code") String code) {
+
+		System.out.println(code);
+		String accessToken = kakaoService.getAccessToken(code);
+
+		System.out.println(accessToken);
+		Map userInfo = kakaoService.getUserInfo(accessToken);
+		Number id = (Number) userInfo.get("id");
+		Long kakaoId = id.longValue();
+		String kakaoname = (String)((Map)userInfo.get("properties")).get("nickname");
+		
+		System.out.println(userInfo);
+		Auth auth = new Auth(kakaoId, kakaoname, LocalDateTime.now());
+		auth = memberservice.save(auth);
+		
+		UserInfo userInfos = memberservice.findByAuth(auth);
+		if(userInfos==null) {
+			return "redirect:http://localhost:5173/signup/"+kakaoId;
+		}else {
+			return "redirect:http://localhost:5173";
+		}
+		
+	}
+	
+	@Transactional
+	@ResponseBody
+	@PostMapping("/signUp")
+	public signUpResDTO kakaoSignUp(@RequestBody signUpDTO sign) {
+		Auth auth = null;
+		try {
+		auth = memberservice.findByID(sign.getKakaoId());
+		}catch(Exception e) {
+			throw new RuntimeException("카카오정보가 없습니다.");
+		}
+		UserInfo usrInfo = null;
+		try {
+			usrInfo = new UserInfo(auth, sign.getType(), LocalDateTime.now());
+			
+		}catch(Exception e) {
+			throw new RuntimeException("usr정보를 만들지 못했습니다.");
+		}
+		usrInfo = memberservice.saveUsrInfo(usrInfo);
+		System.out.println(usrInfo.getAuth().getId());
+		return new signUpResDTO(auth.getNickname(), auth.getId());
+		
+	}
+	
+}

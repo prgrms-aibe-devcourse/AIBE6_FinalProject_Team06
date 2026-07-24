@@ -1,0 +1,9 @@
+package com.example.demo.post.post.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.post.post.entity.Company;
+
+public interface CompanyRepository extends JpaRepository<Company, Long>{
+
+}

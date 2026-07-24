@@ -1,0 +1,26 @@
+package com.example.demo.post.post.dto;
+
+import java.time.LocalDateTime;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class CompanyViewDTO {
+	private Long id;
+	private String companyNumber;
+	private String name;
+
+	private LocalDateTime createdAt;
+
+	public CompanyViewDTO(Long id, String companyNumber, String name, LocalDateTime createdAt) {
+		this.id = id;
+		this.companyNumber = companyNumber;
+		this.name = name;
+	
+		this.createdAt = createdAt;
+	}
+}

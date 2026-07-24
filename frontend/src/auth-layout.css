@@ -1,0 +1,6 @@
+.auth-card .name-field {
+  display: none !important;
+}
+.auth-card .name-field:has(input[required]) {
+  display: grid !important;
+}

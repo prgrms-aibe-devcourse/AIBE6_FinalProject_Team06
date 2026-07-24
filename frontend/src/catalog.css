@@ -1,0 +1,186 @@
+.catalog-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(360px, 1.2fr);
+  gap: 20px;
+}
+.catalog-form form {
+  padding: 8px 21px 22px;
+  display: grid;
+  gap: 14px;
+}
+.catalog-form label {
+  display: grid;
+  gap: 8px;
+  color: #46564d;
+  font-size: 12px;
+  font-weight: 700;
+}
+.catalog-form input {
+  height: 41px;
+  border: 1px solid #dbe4dc;
+  border-radius: 7px;
+  padding: 0 11px;
+  outline-color: #78a96a;
+}
+.catalog-list {
+  min-height: 230px;
+}
+.catalog-items {
+  padding: 0 21px 15px;
+}
+.catalog-items > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-top: 1px solid #edf0ec;
+  color: #34443b;
+  font-weight: 700;
+}
+.catalog-items small {
+  font-size: 11px;
+  color: #96a29b;
+  font-weight: 400;
+}
+.catalog-search {
+  position: relative;
+  margin: 0 21px 12px;
+}
+.catalog-search span {
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  color: #87958d;
+  font-size: 18px;
+}
+.catalog-search input {
+  width: 100%;
+  height: 37px;
+  padding: 0 11px 0 33px;
+  border: 1px solid #dbe4dc;
+  border-radius: 7px;
+  outline-color: #78a96a;
+}
+.catalog-link {
+  padding: 0;
+  background: none;
+  color: #365f43;
+  font-weight: 800;
+  text-align: left;
+}
+.catalog-link:hover {
+  color: #6b9d43;
+  text-decoration: underline;
+}
+.catalog-actions {
+  display: flex;
+  gap: 6px;
+}
+.edit-button,
+.delete-button {
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.edit-button {
+  background: #edf6e9;
+  color: #4f8337;
+}
+.edit-button:hover {
+  background: #dff0d7;
+}
+.delete-button {
+  background: #fff0eb;
+  color: #c85d42;
+}
+.delete-button:hover {
+  background: #ffe2d8;
+}
+.catalog-edit-modal {
+  width: min(600px, 100%);
+}
+.catalog-edit-modal .image-field {
+  grid-column: 1 / -1;
+}
+.catalog-thumb {
+  display: block;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #e0e8de;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.image-field input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.image-upload {
+  display: inline-flex;
+  width: max-content;
+  padding: 9px 12px;
+  border: 1px dashed #a9bcae;
+  border-radius: 7px;
+  background: #f7faf5;
+  color: #517146;
+  cursor: pointer;
+}
+.image-field:has(input[type='file']) {
+  cursor: pointer;
+}
+.image-preview {
+  width: 76px;
+  height: 76px;
+  margin-top: 2px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+.catalog-detail {
+  display: grid;
+  grid-template-columns: minmax(180px, 280px) 1fr;
+  gap: 32px;
+  padding: 28px;
+}
+.detail-image {
+  width: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #f2f6f0;
+  color: #9aa69f;
+}
+.detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.catalog-detail dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(130px, 1fr));
+  gap: 0;
+  margin: 0;
+}
+.catalog-detail dl div {
+  padding: 16px 0;
+  border-bottom: 1px solid #edf0ec;
+}
+.catalog-detail dt {
+  color: #87958d;
+  font-size: 12px;
+}
+.catalog-detail dd {
+  margin: 8px 0 0;
+  color: #304237;
+  font-weight: 800;
+}
+@media (max-width: 700px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+  .catalog-detail {
+    grid-template-columns: 1fr;
+  }
+}
